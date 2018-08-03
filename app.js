@@ -26,8 +26,6 @@ var campgroundRoutes    = require("./routes/campgrounds.js"),
 //helper methods
 var helpers = require("./helpers");
 
-helpers.getLocationInfo("Magdeburg"); //TO REMOVE
-
 //Connecting to database
 mongoose.connect('mongodb://localhost:27017/yelp_camp_v12', { useNewUrlParser: true });
 
@@ -77,3 +75,11 @@ app.use("/campgrounds/:id/comments", commentRoutes);
 
 //Make the web app working...
 app.listen(process.env.PORT, process.env.IP, () => console.log("YelpCamp Server is starting.."));
+
+helpers.getLocationInfo("Badeah", function(err, locationInfo) {
+    if(err) {
+        console.log("ERROR");
+    } else {
+        console.log(locationInfo);
+    }
+});
