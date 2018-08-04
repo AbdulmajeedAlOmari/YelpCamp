@@ -33,6 +33,7 @@ router.post("/", middleware.isLoggedIn, function(req, res){
         }
         // get data from form and add to campgrounds array
         var name = req.body.name;
+        var price = req.body.price;
         var image = req.body.image;
         var desc = req.body.description;
         var author = {
@@ -44,7 +45,7 @@ router.post("/", middleware.isLoggedIn, function(req, res){
         var lng = locationInfo.lng;
         var location = locationInfo.locationName;
         
-        var newCampground = {name: name, image: image, description: desc, author:author, location: location, lat: lat, lng: lng};
+        var newCampground = {name: name, price: price, image: image, description: desc, author:author, location: location, lat: lat, lng: lng};
         
         // Create a new campground and save to DB
         Campground.create(newCampground, function(err, newlyCreated){
@@ -95,7 +96,7 @@ router.put("/:id", middleware.checkCampgroundOwnership, function(req, res){
     }
     req.body.campground.lat = locationInfo.lat;
     req.body.campground.lng = locationInfo.lng;
-    req.body.campground.location = locationInfo.address;
+    req.body.campground.location = locationInfo.locationName;
 
     Campground.findByIdAndUpdate(req.params.id, req.body.campground, function(err, campground){
         if(err){

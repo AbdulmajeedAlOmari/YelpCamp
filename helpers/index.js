@@ -25,8 +25,6 @@ helpers.getLocationInfo = function(query, callback) {
                     // Call it, since we have confirmed it is callable
                     callback(false, locationInfo);
                     return;
-                } else {
-                    console.log("Shit!!!");
                 }
             }
         }
@@ -45,11 +43,27 @@ function getAddress(data) {
         lng: Number
     }
     
-    address.locationName = data.address.municipality + ", " + data.address.countrySubdivision;
+    var firstAddress = '';
+    var secondAddress = data.address.countrySubdivision;
+    
+    var streetName = data.address.streetName;
+    var countrySecondarySubdivision = data.address.countrySecondarySubdivision;
+    
+    var streetName = data.address.streetName;
+    if(data.type === "POI" && data.poi.name !== 'undefined') {
+        firstAddress = data.poi.name + ", ";
+    } else if(streetName && streetName !== 'undefined') {
+        firstAddress = data.address.streetName + ", ";
+    } else if(countrySecondarySubdivision && countrySecondarySubdivision !== 'undefined'
+                && countrySecondarySubdivision !== secondAddress) {
+        firstAddress = data.address.countrySecondarySubdivision + ", ";
+    } else {
+        firstAddress = '';
+    }
+    
+    address.locationName = firstAddress + secondAddress;
     address.lat = data.position.lat;
     address.lng = data.position.lon;
-    
-    console.log(address);
     
     return address;
 }
