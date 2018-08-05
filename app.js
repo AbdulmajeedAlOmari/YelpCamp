@@ -21,12 +21,13 @@ seedDB                  = require("./seeds");
 //requiring routes
 var campgroundRoutes    = require("./routes/campgrounds.js"),
     commentRoutes       = require("./routes/comments.js"),
-    indexRoutes         = require("./routes/index.js");
+    indexRoutes         = require("./routes/index.js"),
+    usersRoutes         = require("./routes/users.js");
 
-//helper methods
+// requiring helper methods
 var helpers = require("./helpers");
 
-//Connecting to database
+// Connecting to database
 mongoose.connect('mongodb://localhost:27017/yelp_camp_v12', { useNewUrlParser: true });
 
 // =================
@@ -71,7 +72,7 @@ app.use(function(req, res, next){
 app.use("/", indexRoutes);
 app.use("/campgrounds", campgroundRoutes);
 app.use("/campgrounds/:id/comments", commentRoutes);
-
+app.use("/users/:id", usersRoutes);
 
 //Make the web app working...
 app.listen(process.env.PORT, process.env.IP, () => console.log("YelpCamp Server is starting.."));

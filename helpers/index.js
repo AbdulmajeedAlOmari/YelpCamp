@@ -7,6 +7,10 @@ helpers.isAllowedToAccess = function(currentUser, target) {
     return currentUser && ( target.author.id.equals(currentUser._id) || JSON.parse(JSON.stringify(currentUser)).isAdmin );
 };
 
+helpers.isAdmin = function(user) {
+    return JSON.parse(JSON.stringify(user)).isAdmin;
+}
+
 helpers.getLocationInfo = function(query, callback) {
     console.log("0) Entered function");
     request('https://api.tomtom.com/search/2/search/'+query+'.json?key='+process.env.GEOCODER_API_KEY+'&limit=1', function (error, response, body) {
@@ -33,6 +37,12 @@ helpers.getLocationInfo = function(query, callback) {
     });
 }
 
+helpers.checkPassword = function(str){
+    // at least one number, one lowercase and one uppercase letter
+    // at least six characters
+    var re = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
+    return re.test(str);
+}
 module.exports = helpers;
 
 //private methods

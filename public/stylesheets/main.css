@@ -25,3 +25,15 @@
     width: 100%;
     border: 1px solid black;
 }
+
+#edit-profile-button {
+    margin-bottom: 20px;
+}
+
+#myTextarea {
+    resize: none;
+}
+
+#about-panel {
+    margin-top: 20px;
+}
