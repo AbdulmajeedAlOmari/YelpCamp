@@ -7,12 +7,22 @@ var helpers = require("../helpers")
 
 //INDEX Route
 router.get("/", function(req, res){
+    var search = {};
+    var noMatch = null;
     
-    Campground.find({}, function(err, allCampgrounds){
+    if(req.query.search) {
+        const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+        search = {name: regex};
+    }
+    
+    Campground.find(search, function(err, allCampgrounds){
         if(err){
             console.log(err);
         } else {
-            res.render("campgrounds/index",{campgrounds: allCampgrounds, page: 'campgrounds'});
+            if(search.name && allCampgrounds.length === 0) {
+                noMatch = "No campgrounds match that query, please try again.";
+            }
+            res.render("campgrounds/index",{campgrounds: allCampgrounds, page: 'campgrounds', noMatch: noMatch});
         }
     });
 });
@@ -125,3 +135,8 @@ router.delete("/:id", middleware.checkCampgroundOwnership, function(req, res){
 });
 
 module.exports = router;
+
+//Private functions
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};

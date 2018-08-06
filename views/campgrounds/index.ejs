@@ -7,17 +7,28 @@
             <p>
                 <a class="btn-primary btn-lg" href="/campgrounds/new">Add New Background</a>
             </p>
+            <p>
+                <form action="/campgrounds" method="GET" class="form-inline">
+                    <div class="form-group">
+                        <input type="text" name="search" placeholder="Campgrounds search..." class="form-control">
+                        <input type="submit" value="Search" class="btn btn-default">
+                    </div>
+                </form>
+            </p>
         </div>
 </header>
 
-<div class="row">
-    <div class="col-lg-12">
-        <h3>Our Most Popular Campgrounds!</h3>
-    </div>
-</div>
-
-
 <div class="row text-center" style="display: flex; flex-wrap: wrap;">
+    <% if(noMatch) { %>
+        <div class="col-md-12">
+            <h4>
+                <p class="text-info">
+                    <%= noMatch %>
+                </p>
+            </h4>
+        </div>
+    <% } %>
+    
     <% campgrounds.forEach(function(campground){ %>
         <div class="col-md-3 col-sm-6"> <!-- "col-sm-6" this is used to make it responsive, it makes the row holds 2 images when resizing to smaller size -->
             <div class="thumbnail">
