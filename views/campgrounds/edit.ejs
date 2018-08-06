@@ -1,34 +1,31 @@
 <% include ../partials/header %>
-
-<div class="row">
-    <h1 style="text-align: center;">Edit <%= campground.name %></h1>
-    <div style="width: 30%; margin: 25px auto;">
-        <form action="/campgrounds/<%= campground._id %>?_method=PUT" method="POST">
-            <div class="form-group">
-                <input class="form-control" type="text" name="campground[name]" value="<%= campground.name %>" required>
-            </div>
-            <div class="form-group input-group">
-                <div class="input-group-addon">$</div>
-                <input type="number" class="form-control" name="campground[price]" value="<%= campground.price %>" min="0.01" step="0.01" required>
-            </div>
-            <div class="form-group">
-                <input class="form-control" type="text" name="campground[image]" value="<%= campground.image %>" required>
-            </div>
-            <div class="form-group">
-                <input class="form-control" type="text" name="campground[description]" value="<%= campground.description %>">
-            </div>
-            <!-- TODO https://api.tomtom.com/search/2/search/<QUERY>.json?key=EtB7SFCAa6178gMHzap0yx0lKCG4EMp6&limit=1 -->
-            <div class="form-group">
-                <label for="location">Location</label>
-                <input class="form-control" type="text" name="location" id="location" value="<%= campground.location %>">
-            </div>
-            <div class="form-group">
-                <button class="btn-lg btn-primary btn-block" type="submit">Submit!</button>
-            </div>
-        </form>
-        <a href="/campgrounds">Go Back</a>
+    <div class="row">
+        <h1 style="text-align: center">Create a New Campground</h1>
+        <div style="width: 30%; margin: 25px auto;">
+            <form action="/campgrounds/<%= campground._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <input class="form-control" type="text" name="campground[name]" value="<%= campground.name %>" required>
+                </div>
+                <div class="form-group input-group">
+                    <div class="input-group-addon">$</div>
+                    <input type="number" class="form-control" name="campground[price]" value="<%= campground.price %>" min="0.01" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="image">Image</label>
+                    <input type="file" id="image" name="image" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <textarea class="custom-textarea form-control" name="campground[description]" rows="3"><%= campground.description %></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input class="form-control" type="text" name="campground[location]" id="location" value="<%= campground.location %>" required>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-lg btn-primary btn-block">Update!</button>
+                </div>
+            </form>
+            <a href="/campgrounds">Go Back</a>
+        </div>
     </div>
-</div>
-
-
 <% include ../partials/footer %>
