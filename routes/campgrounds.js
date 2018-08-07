@@ -5,7 +5,10 @@ middleware  = require("../middleware");
 
 var helpers = require("../helpers")
 
-//Cloudinary Setup
+// ================
+// Cloudinary Setup
+// ================
+
 var multer = require('multer');
 var storage = multer.diskStorage({
   filename: function(req, file, callback) {
@@ -40,7 +43,7 @@ router.get("/", function(req, res){
     
     Campground.find(search, function(err, allCampgrounds){
         if(err){
-            console.log(err);
+            return errorMessage(req, res, err);
         } else {
             if(search.name && allCampgrounds.length === 0) {
                 noMatch = "No campgrounds match that query, please try again.";
@@ -124,8 +127,7 @@ router.put("/:id", middleware.checkCampgroundOwnership, upload.single('image'), 
         
         Campground.findById(req.params.id, async function(err, campground){
             if(err){
-                req.flash("error", err.message);
-                return res.redirect("back");
+                return errorMessage(req, res, err);
             }
             if(req.file) {
                 try {
@@ -160,28 +162,31 @@ router.put("/:id", middleware.checkCampgroundOwnership, upload.single('image'), 
 router.delete("/:id", middleware.checkCampgroundOwnership, function(req, res){
     Campground.findById(req.params.id, async function(err, campground){
         if(err) {
-            req.flash("error", "There was an error, please try again later.");
-            return res.redirect("/campgrounds");
+            return errorMessage(req, res, err);
         }
         
         try{
             await cloudinary.v2.uploader.destroy(campground.imageId);
             Campground.remove(function(err){
-                req.flash("success", "Successfully deleted campground.");
-                res.redirect("/campgrounds");
+                return errorMessage(req, res, err);
             });
         } catch(err) {
-            req.flash("error", "There was an error, please try again later.");
-            return res.redirect("/campgrounds");
+            return errorMessage(req, res, err);
         }
-        
-        
     });
 });
 
 module.exports = router;
 
-//Private functions
+// =================
+// Private functions
+// =================
+
 function escapeRegex(text) {
     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 };
+
+function errorMessage(req, res, err) {
+    req.flash("error", err.message);
+    return res.redirect("/campgrounds");
+}
