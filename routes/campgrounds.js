@@ -8,7 +8,6 @@ var helpers = require("../helpers")
 // ================
 // Cloudinary Setup
 // ================
-
 var multer = require('multer');
 var storage = multer.diskStorage({
   filename: function(req, file, callback) {
@@ -167,7 +166,7 @@ router.delete("/:id", middleware.checkCampgroundOwnership, function(req, res){
         
         try{
             await cloudinary.v2.uploader.destroy(campground.imageId);
-            Campground.remove(function(err){
+            campground.remove(function(err){
                 return errorMessage(req, res, err);
             });
         } catch(err) {

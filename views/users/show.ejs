@@ -9,7 +9,7 @@
                 <a href="mailto:<%= user.email %>"><%= user.email %></a>
             </div>
         </div>
-        <% if(currentUser && (currentUser._id.equals(user._id) || JSON.parse(JSON.stringify(currentUser)).isAdmin)) { %>
+        <% if( currentUser && (currentUser._id.equals(user._id) || currentUser.isAdmin) ) { %>
             <a  type="button"
                 id="edit-profile-button"
                 class="btn btn-primary btn-lg btn-block" 
@@ -28,21 +28,23 @@
     </div>
     <div class="col-md-8">
         <legend><%= user.firstName %>'s campgrounds:</legend>
-        <div class="well">
-            <div class="row text-center" style="display: flex; flex-wrap: wrap;">
-                <% campgrounds.forEach(function(campground){ %>
-                    <div class="col-md-3 col-sm-6"> <!-- "col-sm-6" this is used to make it responsive, it makes the row holds 2 images when resizing to smaller size -->
-                        <div class="thumbnail">
-                            <img src="<%= campground.image %>"/>
-                            <div class="caption">
-                                <h4><%= campground.name %></h4>
+        <div class="card mt-2">
+            <div class="card-body">
+                <% if(campgrounds && campgrounds.length === 0) { %>
+                    <p><%= user.firstName %> does not have campgrouds yet.</p>
+                <% } else { %>
+                    <% campgrounds.forEach(function(campground){ %>
+                        <div class="col-lg-3 col-md-4 col-sm-6 mb-4"> <!-- "col-sm-6" this is used to make it responsive, it makes the row holds 2 images when resizing to smaller size -->
+                            <div class="card">
+                                <img class="card-img-top" src="<%= campground.image %>" alt="<%= campground.name %>">
+                                <div class="card-body">
+                                    <h5 class="card-title"><%= campground.name %></h5>
+                                    <a href="/campgrounds/<%= campground._id %>" class="btn btn-primary">More Info</a>
+                                </div>
                             </div>
-                            <p>
-                                <a href="/campgrounds/<%= campground._id %>" class="btn btn-primary">More Info</a>
-                            </p>
                         </div>
-                    </div>
-                <% }); %>
+                    <% }); %>
+                <% } %>
             </div>
         </div>
     </div>
