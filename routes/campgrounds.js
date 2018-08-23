@@ -186,6 +186,7 @@ function escapeRegex(text) {
 };
 
 function errorMessage(req, res, err) {
-    req.flash("error", err.message);
+    var message = err.message ? err.message : "An error occured, please try again later.";
+    req.flash("error", );
     return res.redirect("/campgrounds");
 }
