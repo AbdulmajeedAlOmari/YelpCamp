@@ -33,17 +33,19 @@
                 <% if(campgrounds && campgrounds.length === 0) { %>
                     <p><%= user.firstName %> does not have campgrouds yet.</p>
                 <% } else { %>
-                    <% campgrounds.forEach(function(campground){ %>
-                        <div class="col-lg-3 col-md-4 col-sm-6 mb-4"> <!-- "col-sm-6" this is used to make it responsive, it makes the row holds 2 images when resizing to smaller size -->
-                            <div class="card">
-                                <img class="card-img-top" src="<%= campground.image %>" alt="<%= campground.name %>">
-                                <div class="card-body">
-                                    <h5 class="card-title"><%= campground.name %></h5>
-                                    <a href="/campgrounds/<%= campground._id %>" class="btn btn-primary">More Info</a>
+                    <div class="row text-center">
+                        <% campgrounds.forEach(function(campground){ %>
+                            <div class="col-lg-3 col-md-4 col-sm-6 mb-4"> <!-- "col-sm-6" this is used to make it responsive, it makes the row holds 2 images when resizing to smaller size -->
+                                <div class="card">
+                                    <img class="card-img-top" src="<%= campground.image %>" alt="<%= campground.name %>">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><%= campground.name %></h5>
+                                        <a href="/campgrounds/<%= campground._id %>" class="btn btn-primary">More Info</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    <% }); %>
+                        <% }); %>
+                    </div>
                 <% } %>
             </div>
         </div>
