@@ -35,10 +35,10 @@ router.post("/register", function(req, res){
     if(password !== repassword) {
         req.flash("error", "passwords do not match.");
         return res.redirect("/register");
-    } /* else if(!helpers.checkPassword(password)) {
+    } else if(!helpers.checkPassword(password)) {
         req.flash("error", "your password is too weak.");
         return res.redirect("/register");
-    } */
+    }
     
     var newUser = new User({ username:username, email:email, firstName:firstName, lastName:lastName});
     if(avatar !== "") {

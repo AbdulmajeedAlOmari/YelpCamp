@@ -12,19 +12,12 @@ helpers.isAdmin = function(user) {
 }
 
 helpers.getLocationInfo = function(query, callback) {
-    console.log("0) Entered function");
     request('https://api.tomtom.com/search/2/search/'+query+'.json?key='+process.env.GEOCODER_API_KEY+'&limit=1', function (error, response, body) {
         if (!error && response.statusCode == 200) {
-            console.log("0.5) body is: " + body);
             var parsedBody = JSON.parse(body);
-            console.log("1) Successfully Parsed Body: " + parsedBody);
             if(parsedBody.results && parsedBody.results.length) {
-                console.log("2) Gathering data in if statement");
-                console.log("2.5) data is: " + parsedBody.results);
                 var data = parsedBody.results[0];
-                console.log("3) data is gathered with address: " + data.address);
                 var locationInfo = getAddress(data);
-                console.log("4) now trigger the callback");
                 if (typeof callback === "function") {
                     // Call it, since we have confirmed it is callable
                     callback(false, locationInfo);
