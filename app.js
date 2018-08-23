@@ -28,7 +28,8 @@ var campgroundRoutes    = require("./routes/campgrounds.js"),
 var helpers = require("./helpers");
 
 // Connecting to database
-mongoose.connect('mongodb://yelpcampdemonstration:' + process.env.MONGODB_PASSWORD + '@ds125502.mlab.com:25502/yelpcampdemonstration', { useNewUrlParser: true });
+mongoose.connect(process.env.DATABASEURL, { useNewUrlParser: true });
+// mongoose.connect('', { useNewUrlParser: true });
 
 // =================
 // Application setup
