@@ -167,7 +167,9 @@ router.delete("/:id", middleware.checkCampgroundOwnership, function(req, res){
         try{
             await cloudinary.v2.uploader.destroy(campground.imageId);
             campground.remove(function(err){
-                return errorMessage(req, res, err);
+                if(err) {
+                    return errorMessage(req, res, err);
+                }
             });
         } catch(err) {
             return errorMessage(req, res, err);

@@ -1,4 +1,4 @@
-require("dotenv").config();
+require('dotenv').config();
 
 // =========================================
 // Requiring Libraries and Express Framework
