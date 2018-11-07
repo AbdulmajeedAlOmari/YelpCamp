@@ -1,14 +1,14 @@
-var express = require("express"),
-router      = express.Router(),
-passport    = require("passport"),
-async       = require("async"),
-nodemailer  = require("nodemailer"),
-crypto      = require("crypto"),
-User        = require("../models/user"),
-Campground  = require("../models/campground"),
-middleware  = require("../middleware");
+const express   = require("express"),
+router          = express.Router(),
+passport        = require("passport"),
+asyncLibrary    = require("async"),
+nodemailer      = require("nodemailer"),
+crypto          = require("crypto"),
+User            = require("../models/user"),
+Campground      = require("../models/campground"),
+middleware      = require("../middleware");
 
-var helpers = require("../helpers");
+const helpers = require("../helpers");
 
 //Root Route
 router.get("/", (req, res) => res.render("landing"));
@@ -22,15 +22,16 @@ router.get("/", (req, res) => res.render("landing"));
 router.get("/register", function(req, res){
    res.render("register", {page: 'register'}); 
 });
+
 //hadle registration logic
 router.post("/register", function(req, res){
-    var username = req.body.username;
-    var password = req.body.password;
-    var repassword = req.body.repassword;
-    var email = req.body.email;
-    var firstName = req.body.firstName;
-    var lastName = req.body.lastName;
-    var avatar = req.body.avatar;
+    const username = req.body.username;
+    const password = req.body.password;
+    const repassword = req.body.repassword;
+    const email = req.body.email;
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const avatar = req.body.avatar;
     
     if(password !== repassword) {
         req.flash("error", "passwords do not match.");
@@ -40,7 +41,7 @@ router.post("/register", function(req, res){
         return res.redirect("/register");
     }
     
-    var newUser = new User({ username:username, email:email, firstName:firstName, lastName:lastName});
+    const newUser = new User({ username:username, email:email, firstName:firstName, lastName:lastName});
     if(avatar !== "") {
         newUser.avatar = avatar;
     }
@@ -85,10 +86,10 @@ router.get("/forgot", function(req, res){
 
 //forgot logic
 router.post("/forgot", function(req, res, next){
-   async.waterfall([
+   asyncLibrary.waterfall([
        function(done){
            crypto.randomBytes(20, function(err, buf){
-              var token = buf.toString("hex");
+              const token = buf.toString("hex");
               done(err, token);
            });
        },
@@ -108,7 +109,7 @@ router.post("/forgot", function(req, res, next){
            });
        },
        function(token, user, done){
-           var smtpTransport = nodemailer.createTransport({
+           const smtpTransport = nodemailer.createTransport({
                service: 'Gmail',
                auth:{
                    user: 'yelpcampdemonstration@gmail.com',
@@ -116,7 +117,7 @@ router.post("/forgot", function(req, res, next){
                }
            });
            
-           var mailOptions = {
+           const mailOptions = {
                to: user.email,
                from: 'yelpcampdemonstration@gmail.com',
                subject: 'YelpCamp - Password Reset',
@@ -148,7 +149,7 @@ router.get("/reset/:token", function(req, res){
 });
 
 router.post("/reset/:token", function(req, res){
-    async.waterfall([
+    asyncLibrary.waterfall([
         function(done){
             User.findOne({resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() }}, function(err, foundUser){
                 if(err || !foundUser) {
@@ -174,7 +175,7 @@ router.post("/reset/:token", function(req, res){
             });
         },
         function(user, done) {
-            var smtpTransport = nodemailer.createTransport({
+            const smtpTransport = nodemailer.createTransport({
                 service: 'Gmail',
                 auth: {
                   user: 'yelpcampdemonstration@gmail.com',
@@ -182,7 +183,7 @@ router.post("/reset/:token", function(req, res){
                 }
             });
             
-            var mailOptions = {
+            const mailOptions = {
                 to: user.email,
                 from: 'learntocodeinfo@mail.com',
                 subject: 'Your password has been changed',

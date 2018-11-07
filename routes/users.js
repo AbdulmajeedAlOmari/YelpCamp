@@ -1,8 +1,8 @@
-var express = require("express"),
-router      = express.Router({ mergeParams: true }),
-User        = require("../models/user"),
-Campground  = require("../models/campground"),
-middleware  = require("../middleware");
+const express   = require("express"),
+router          = express.Router({ mergeParams: true }),
+User            = require("../models/user"),
+Campground      = require("../models/campground"),
+middleware      = require("../middleware");
 
 // "/users/:id"
 // SHOW: User profile 
@@ -38,13 +38,13 @@ router.get("/edit", middleware.checkAccountOwnership, function(req, res){
 
 // UPDATE User Profile
 router.put("/", middleware.checkAccountOwnership,function(req, res){
-    var email = req.body.email;
-    var firstName = req.body.firstName;
-    var lastName = req.body.lastName;
-    var avatar = req.body.avatar;
-    var bio = req.body.bio;
+    const email = req.body.email;
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const avatar = req.body.avatar;
+    const bio = req.body.bio;
     
-    User.findByIdAndUpdate(req.params.id, {$set: {email: email, firstName: firstName, lastName: lastName, avatar: avatar, bio: bio}}, function(err, updatedUser){
+    User.findByIdAndUpdate(req.params.id, {$set: { email, firstName, lastName, avatar, bio }}, function(err, updatedUser){
         if(err || !updatedUser) {
             console.log(err);
             req.flash("error", "User was not found.");

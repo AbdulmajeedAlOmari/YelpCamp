@@ -1,29 +1,29 @@
-var express = require("express"),
-router      = express.Router(),
-Campground  = require("../models/campground"),
-middleware  = require("../middleware");
+const   express     = require("express"),
+        router      = express.Router(),
+        Campground  = require("../models/campground"),
+        middleware  = require("../middleware");
 
-var helpers = require("../helpers")
+const helpers = require("../helpers")
 
 // ================
 // Cloudinary Setup
 // ================
-var multer = require('multer');
-var storage = multer.diskStorage({
+const multer = require('multer');
+const storage = multer.diskStorage({
   filename: function(req, file, callback) {
     callback(null, Date.now() + file.originalname);
   }
 });
-var imageFilter = function (req, file, cb) {
+const imageFilter = function (req, file, cb) {
     // accept image files only
     if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
         return cb(new Error('Only image files are allowed!'), false);
     }
     cb(null, true);
 };
-var upload = multer({ storage: storage, fileFilter: imageFilter})
+const upload = multer({ storage: storage, fileFilter: imageFilter})
 
-var cloudinary = require('cloudinary');
+const cloudinary = require('cloudinary');
 cloudinary.config({ 
   cloud_name: 'dotsaviour', 
   api_key: process.env.CLOUDINARY_API_KEY, 
@@ -32,8 +32,8 @@ cloudinary.config({
 
 //INDEX Route
 router.get("/", function(req, res){
-    var search = {};
-    var noMatch = null;
+    let search = {};
+    let noMatch = null;
     
     if(req.query.search) {
         const regex = new RegExp(escapeRegex(req.query.search), 'gi');
@@ -131,7 +131,7 @@ router.put("/:id", middleware.checkCampgroundOwnership, upload.single('image'), 
             if(req.file) {
                 try {
                     await cloudinary.v2.uploader.destroy(campground.imageId);
-                    var result = await cloudinary.v2.uploader.upload(req.file.path);
+                    const result = await cloudinary.v2.uploader.upload(req.file.path);
                     campground.imageId = result.public_id;
                     campground.image = result.secure_url;
                 } catch(err) {
@@ -140,7 +140,7 @@ router.put("/:id", middleware.checkCampgroundOwnership, upload.single('image'), 
                 }
             }
             
-            var campgroundBody = req.body.campground;
+            const campgroundBody = req.body.campground;
             
             campground.name = campgroundBody.name;
             campground.price = campgroundBody.price;
@@ -188,7 +188,7 @@ function escapeRegex(text) {
 };
 
 function errorMessage(req, res, err) {
-    var message = err.message ? err.message : "An error occured, please try again later.";
+    let message = err.message ? err.message : "An error occured, please try again later.";
     req.flash("error", );
     return res.redirect("/campgrounds");
 }

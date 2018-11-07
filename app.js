@@ -3,7 +3,7 @@ require('dotenv').config();
 // =========================================
 // Requiring Libraries and Express Framework
 // =========================================
-var express             = require("express"),
+const express             = require("express"),
 app                     = express(),
 bodyParser              = require("body-parser"),
 mongoose                = require("mongoose"),
@@ -19,13 +19,13 @@ User                    = require("./models/user"),
 seedDB                  = require("./seeds");
 
 //requiring routes
-var campgroundRoutes    = require("./routes/campgrounds.js"),
-    commentRoutes       = require("./routes/comments.js"),
-    indexRoutes         = require("./routes/index.js"),
-    usersRoutes         = require("./routes/users.js");
+const   campgroundRoutes    = require("./routes/campgrounds.js"),
+        commentRoutes       = require("./routes/comments.js"),
+        indexRoutes         = require("./routes/index.js"),
+        usersRoutes         = require("./routes/users.js");
 
 // requiring helper methods
-var helpers = require("./helpers");
+const helpers = require("./helpers");
 
 // Connecting to database
 mongoose.connect(process.env.DATABASEURL, { useNewUrlParser: true });
